@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>CekResi — Lacak Paketmu</title>
 
-<meta name="description" content="Cek resi paket online cepat dan mudah semua ekspedisi.">
-<meta name="keywords" content="cek resi, tracking paket, resi online">
+<meta name="description" content="Cek resi paket online cepat dan mudah semua ekspedisi Indonesia.">
+<meta name="keywords" content="cek resi, tracking paket, lacak paket">
 <meta name="author" content="FR Projects">
 
 <meta property="og:title" content="Cek Resi Online Gratis">
@@ -20,6 +19,291 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-  </script>
+:root{
+  --bg:#0a0a14;
+  --card:#12121f;
+  --border:rgba(255,255,255,0.08);
+  --accent1:#ff6b35;
+  --accent2:#7c3aed;
+  --accent3:#06b6d4;
+  --text:#f0f0f8;
+  --muted:#7b7b9a;
+  --radius:18px;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.wrapper{
+  max-width:760px;
+  margin:auto;
+  padding:40px 20px 80px;
+}
+
+header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.logo{
+  font-family:'Syne',sans-serif;
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+header h1{
+  font-family:'Syne',sans-serif;
+  font-size:48px;
+  line-height:1.1;
+  margin-bottom:10px;
+}
+
+header h1 span{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+header p{
+  color:var(--muted);
+}
+
+.search-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+}
+
+.search-label{
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.search-row{
+  display:flex;
+  gap:10px;
+}
+
+.search-input{
+  flex:1;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 18px;
+  color:white;
+  outline:none;
+  font-size:15px;
+}
+
+.search-btn{
+  border:none;
+  padding:14px 24px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.search-btn:hover{
+  opacity:0.9;
+}
+
+.result-card{
+  margin-top:25px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+
+.result-header{
+  padding:20px;
+  border-bottom:1px solid var(--border);
+}
+
+.result-resi{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.result-ekspedisi{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.timeline{
+  padding:20px;
+}
+
+.timeline-item{
+  border-left:2px solid var(--accent2);
+  padding-left:15px;
+  margin-bottom:20px;
+}
+
+.timeline-item:last-child{
+  margin-bottom:0;
+}
+
+.tl-status{
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.tl-desc{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:3px;
+}
+
+.tl-time{
+  font-size:12px;
+  color:#555;
+}
+
+.error-box{
+  margin-top:20px;
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  color:#f87171;
+  padding:16px;
+  border-radius:12px;
+}
+
+footer{
+  margin-top:50px;
+  text-align:center;
+  color:#555;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header>
+  <div class="logo">📦 CekResi</div>
+
+  <h1>Lacak <span>Paketmu</span></h1>
+
+  <p>Semua ekspedisi populer Indonesia</p>
+</header>
+
+<div class="search-card">
+
+  <div class="search-label">Nomor Resi</div>
+
+  <div class="search-row">
+    <input
+      type="text"
+      id="resi-input"
+      class="search-input"
+      placeholder="Contoh: JNE00123456789"
+    >
+
+    <button class="search-btn" onclick="cekResi()">
+      Lacak
+    </button>
+  </div>
+
+</div>
+
+<div id="result-area"></div>
+
+<footer>
+  Dibuat dengan ❤️ · CekResi © 2025
+</footer>
+
+</div>
+
+<script>
+
+function cekResi(){
+
+  const resi =
+    document.getElementById('resi-input')
+    .value
+    .trim();
+
+  const area =
+    document.getElementById('result-area');
+
+  if(!resi){
+    area.innerHTML =
+      '<div class="error-box">Masukkan nomor resi terlebih dahulu.</div>';
+    return;
+  }
+
+  const timeline = `
+    <div class="result-card">
+
+      <div class="result-header">
+        <div class="result-resi">${resi}</div>
+
+        <div class="result-ekspedisi">
+          JNE Express · 4 Update
+        </div>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="tl-status">🚚 Dalam Pengiriman</div>
+          <div class="tl-desc">
+            Paket sedang menuju alamat tujuan
+          </div>
+          <div class="tl-time">
+            Hari ini · 14:20
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-status">📦 Tiba di Gudang Transit</div>
+          <div class="tl-desc">
+            Paket tiba di gudang Jakarta
+          </div>
+          <div class="tl-time">
+            Hari ini · 09:10
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-status">🚛 Dalam Perjalanan</div>
+          <div class="tl-desc">
+            Paket dikirim antar kota
+          </div>
+          <div class="tl-time">
+            Kemarin · 23:41
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  area.innerHTML = timeline;
+}
+
+</script>
+
 </body>
 </html>
